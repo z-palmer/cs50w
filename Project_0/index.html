@@ -9,22 +9,27 @@
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles.css">
+    <div style="text-align: right">
+        <a href="advanced.html" style="padding-right: 10px">Advanced Search</a>
+        <a href="image.html">Image Search</a>
+    </div>
     <title>Search</title>
 </head>
 
 <body>
-    <form class="row g-3" action="https://www.google.com/search" style="padding-top: 200px">
-        <div class="col-md-7">
-            <input class="form-control" autofocus autocomplete="off" type="text" name="q"
+    <form action="https://www.google.com/search" style="padding-top: 50px">
+        <div class="logo">
+            <span style="color: #3883DF">S</span><span style="color: #E24A3B">e</span><span
+                style="color: #E2BD3B">a</span><span style="color: #3883DF">r</span><span
+                style="color: green">c</span><span style="color: #E24A3B">h</span>
+        </div>
+        <div>
+            <input class="search" autofocus autocomplete="off" type="text" name="q"
                 placeholder="Search Google or type a URL">
         </div>
         <div>
-            <a href="advanced.html">Advanced Search</a>
-            <a href="image.html">Image Search</a>
-        </div>
-        <div>
-            <input type="submit" class="btn btn-primary" value="Google Search">
-            <button name="btnI" class="btn btn-primary" defaultValue="I%27m+Feeling+Lucky">I'm Feeling Lucky</button>
+            <input type="submit" class="btn btn-light" value="Google Search">
+            <button name="btnI" class="btn btn-light" defaultValue="I%27m+Feeling+Lucky">I'm Feeling Lucky</button>
         </div>
     </form>
 </body>
