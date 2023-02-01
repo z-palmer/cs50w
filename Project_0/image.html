@@ -9,23 +9,29 @@
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles.css">
+    <div style="text-align: right">
+        <a href="index.html">Search</a>
+    </div>
     <title>
         Image Search
     </title>
-    <div class="head">
-        <a href="index.html"><span style="color: #3883DF">S</span><span style="color: #E24A3B">e</span><span
-                style="color: #E2BD3B">a</span><span style="color: #3883DF">r</span><span
-                style="color: green">c</span><span style="color: #E24A3B">h</span></a>
-    </div>
 </head>
 
 <body>
     <form action="https://www.google.com/search">
-        <div>
-            <input class="search" type="text" autocomplete="off" name="q">
+        <div class="logo">
+            <span style="color: #3883DF">S</span><span style="color: #E24A3B">e</span><span
+                style="color: #E2BD3B">a</span><span style="color: #3883DF">r</span><span
+                style="color: green">c</span><span style="color: #E24A3B">h</span>
+            <h2 class="imglogo">Images</h2>
+        </div>
+        <div style="padding-top: 0px">
+            <input class="search" type="text" autocomplete="off" name="q" placeholder="Search for images">
         </div>
         <input type="hidden" value="isch" name="tbm">
-        <input class="btn btn-light" type="submit" value="Image Search">
+        <div>
+            <input class="btn btn-light" type="submit" value="Image Search">
+        </div>
     </form>
 </body>
 
