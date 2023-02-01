@@ -12,33 +12,38 @@
     <title>
         Advanced Search
     </title>
-    <div style="text-align: right">
-        <a href="index.html">Search</a>
+    <div class="head">
+        <a href="index.html"><span style="color: #3883DF">S</span><span style="color: #E24A3B">e</span><span
+                style="color: #E2BD3B">a</span><span style="color: #3883DF">r</span><span
+                style="color: green">c</span><span style="color: #E24A3B">h</span></a>
     </div>
 </head>
 
 <body>
     <div>
-        <h2>Find pages with...</h2>
+        <h2 class="advanced">Advanced Search</h2>
     </div>
-    <form action="https://www.google.com/search">
-        <div class="form-group">
-            <input class="form-control" type="text" autofocus autocomplete="off" name="as_q" id="as_q"
-                placeholder="all these words">
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="text" autocomplete="off" name="as_epq" id="as_epq"
-                placeholder="these exact words">
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="text" autocomplete="off" name="as_oq" id="as_oq"
-                placeholder="any of these words">
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="text" autocomplete="off" name="as_eq" id="as_eq"
-                placeholder="none of these words">
-        </div>
+    <form class="adform" action="https://www.google.com/search">
         <div>
+            <h3>Find pages with...</h3>
+        </div>
+        <div class="adrow">
+            <label class="adlabel">all these words:</label><input class="adinput" type="text" autofocus
+                autocomplete="off" name="as_q" id="as_q">
+        </div>
+        <div class="adrow">
+            <label class="adlabel">these exact words:</label><input class="adinput" type="text" autocomplete="off"
+                name="as_epq" id="as_epq">
+        </div>
+        <div class="adrow">
+            <label class="adlabel">any of these words:</label><input class="adinput" type="text" autocomplete="off"
+                name="as_oq" id="as_oq">
+        </div>
+        <div class="adrow">
+            <label class="adlabel">none of these words: </label><input class="adinput" type="text" autocomplete="off"
+                name="as_eq" id="as_eq">
+        </div>
+        <div class="adbutton">
             <button class="btn btn-primary" type="submit">Advanced Search</button>
         </div>
     </form>
