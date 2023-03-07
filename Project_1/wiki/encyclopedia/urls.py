@@ -5,5 +5,5 @@ from . import views
 app_name = 'encyclopedia'
 urlpatterns = [
     path("", views.index, name="index"),
-    path('entry/', views.entry, name='entry')
+    path('new/', views.new_entry, name='new')
 ]
