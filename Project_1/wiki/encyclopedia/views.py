@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -13,6 +13,11 @@ def index(request):
 
 # Entry page: /wiki/TITLE should take user to an entry with that TITLE
 # Rework index page to have links to entries
+
+
+def entry(request, name):
+    util.convert(name, 'encyclopedia/templates/encyclopedia/entry.html')
+    return render(request, "encyclopedia/entry.html")
 
 # Search feature that takes into account partial strings by listing entries with that partial string
 
