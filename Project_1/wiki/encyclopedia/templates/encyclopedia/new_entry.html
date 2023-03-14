@@ -7,7 +7,7 @@
         padding: 10px;
     }
 </style>
-<h1>Enter Markdown Text Here:</h1>
+<h1>New Entry</h1>
 <form action="{% url 'encylopedia:new' %}" method="post">
     {% csrf_token %}
     {% if messages %}
@@ -19,7 +19,7 @@
         <input type="text" name="title" placeholder="Title">
     </div>
     <div>
-        <textarea name="content"></textarea>
+        <textarea name="content" placeholder="Enter Markdown text here"></textarea>
     </div>
     <button type="submit">Save</button>
 </form>

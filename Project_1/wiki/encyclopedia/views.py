@@ -18,7 +18,7 @@ def index(request):
 
 def entry(request, name):
     util.convert(name, 'encyclopedia/templates/encyclopedia/entry.html')
-    return render(request, "encyclopedia/entry.html")
+    return render(request, "encyclopedia/entry.html", {'name': name})
 
 # Search feature that takes into account partial strings by listing entries with that partial string
 
@@ -41,7 +41,23 @@ def new_entry(request):
 
 # Edit page that pulls up existing data and has a save button
 
+
+def edit(request, name):
+    f = default_storage.open(f'entries/{name}.md', 'r+')
+    content = f.read()
+    if request.method == 'POST':
+        edited = request.POST['edited']
+        f.seek(0)
+        f.write(edited)
+        f.truncate()
+        return HttpResponseRedirect(reverse('encyclopedia:entry', args=[name]))
+    if request.method == 'GET':
+        return render(request, 'encyclopedia/edit.html', {
+            'name': name, 'content': content
+        })
+
 # Random page button
 
-# Markdown to HTML conversion, making sure to support headings, bold text,
-# unordered lists, links, and paragraphs. Look into the re module
+
+def random(request):
+    return

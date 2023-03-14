@@ -2,5 +2,27 @@
         {% extends 'encyclopedia/layout.html' %}
 
         {% block body %}
-        <p>Perl</p>
-{% endblock %}
+        <h1>HTML</h1>
+<p></p>
+<p>HTML is a markup language that can be used to define the structure of a web page. HTML elements include</p>
+<p></p>
+<ul>
+<li>headings</li>
+</ul>
+<ul>
+<li>paragraphs</li>
+</ul>
+<ul>
+<li>lists</li>
+</ul>
+<ul>
+<li>links</li>
+</ul>
+<ul>
+<li>and more!</li>
+</ul>
+<p></p>
+<p>The most recent major version of HTML is HTML5.</p>
+<div><a href="{% url 'encyclopedia:edit' name %}">Edit</a></div>
+    {% endblock %}
+    

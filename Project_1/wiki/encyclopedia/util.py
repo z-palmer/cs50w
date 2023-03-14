@@ -51,5 +51,7 @@ def convert(original, new):
     for line in f.readlines():
         converted = markdown2.markdown(line)
         html.write(converted)
-    html.write('{% endblock %}')
+    html.write('''<div><a href="{% url 'encyclopedia:edit' name %}">Edit</a></div>
+    {% endblock %}
+    ''')
     return
