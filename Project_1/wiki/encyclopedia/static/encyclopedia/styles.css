@@ -41,6 +41,7 @@ form {
     padding: 20px;
 }
 
-div {
+.error {
+    background-color: rgb(218, 110, 110);
     padding: 10px;
 }

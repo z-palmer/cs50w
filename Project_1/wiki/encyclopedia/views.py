@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
+from django.urls import reverse
+from django.contrib import messages
 
 from . import util
 
@@ -26,7 +28,17 @@ def entry(request, name):
 
 
 def new_entry(request):
-    return render(request, 'encyclopedia/new_entry.html')
+    if request.method == 'POST':
+        title = request.POST['title']
+        content = request.POST['content']
+        if title in util.list_entries():
+            messages.error(request, 'Entry already exists')
+            return HttpResponseRedirect(reverse('encyclopedia:new'))
+        f = default_storage.open(f'entries/{title}.md', 'w+')
+        f.write(content)
+        return HttpResponseRedirect(reverse('encyclopedia:entry', args=[title]))
+    else:
+        return render(request, 'encyclopedia/new_entry.html')
 
 # Edit page that pulls up existing data and has a save button
 

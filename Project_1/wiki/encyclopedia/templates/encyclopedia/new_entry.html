@@ -1,14 +1,26 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block body %}
+<style>
+    .error {
+        background-color: rgb(218, 110, 110);
+        padding: 10px;
+    }
+</style>
 <h1>Enter Markdown Text Here:</h1>
-<form>
+<form action="{% url 'encylopedia:new' %}" method="post">
+    {% csrf_token %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="error">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
     <div>
         <input type="text" name="title" placeholder="Title">
     </div>
     <div>
         <textarea name="content"></textarea>
     </div>
-    <input type="submit">
+    <button type="submit">Save</button>
 </form>
 {% endblock %}
