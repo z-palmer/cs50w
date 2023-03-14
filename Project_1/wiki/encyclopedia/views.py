@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.core.files.storage import default_storage
 from django.urls import reverse
 from django.contrib import messages
+import random
 
 from . import util
 
@@ -59,5 +60,8 @@ def edit(request, name):
 # Random page button
 
 
-def random(request):
-    return
+def random_entry(request):
+    entries = util.list_entries()
+    number = random.randint(0, len(entries))
+    page = entries[(number - 1)]
+    return HttpResponseRedirect(reverse('encyclopedia:entry', args=[page]))
