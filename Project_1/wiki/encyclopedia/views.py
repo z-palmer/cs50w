@@ -21,8 +21,6 @@ def entry(request, name):
     util.convert(name, 'encyclopedia/templates/encyclopedia/entry.html')
     return render(request, "encyclopedia/entry.html", {'name': name})
 
-# Search feature that takes into account partial strings by listing entries with that partial string
-
 # New page: Enter markdown data in a textarea field with a save button at the bottom,
 # check to make sure the entry does not already exist, then save to disk as a new markdown entry
 
@@ -52,7 +50,7 @@ def edit(request, name):
         f.write(edited)
         f.truncate()
         return HttpResponseRedirect(reverse('encyclopedia:entry', args=[name]))
-    if request.method == 'GET':
+    elif request.method == 'GET':
         return render(request, 'encyclopedia/edit.html', {
             'name': name, 'content': content
         })
@@ -65,3 +63,25 @@ def random_entry(request):
     number = random.randint(0, len(entries))
     page = entries[(number - 1)]
     return HttpResponseRedirect(reverse('encyclopedia:entry', args=[page]))
+
+# Search feature that takes into account partial strings by listing entries with that partial string
+
+
+def search(request):
+    q = request.GET['q']
+    if q in util.list_entries():
+        return HttpResponseRedirect(reverse('encyclopedia:entry', args=[q]))
+    else:
+        possibles = []
+        for page in util.list_entries():
+            if q in page:
+                possibles.append(page)
+            else:
+                continue
+        if possibles == []:
+            messages.error(request, 'No entries match your search.')
+            return HttpResponseRedirect(reverse('encyclopedia:index'))
+        else:
+            return render(request, 'encyclopedia/search.html', {
+                'results': possibles
+            })
