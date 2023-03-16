@@ -18,6 +18,9 @@ def index(request):
 
 
 def entry(request, name):
+    if name not in util.list_entries():
+        messages.error(request, 'Entry does not exist.')
+        return HttpResponseRedirect(reverse('encyclopedia:index'))
     util.convert(name, 'encyclopedia/templates/encyclopedia/entry.html')
     return render(request, "encyclopedia/entry.html", {'name': name})
 

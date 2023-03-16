@@ -11,12 +11,19 @@
     <link href="{% static 'encyclopedia/styles.css' %}" rel="stylesheet">
 </head>
 
+<style>
+    .error {
+        background-color: rgb(218, 110, 110);
+        padding: 10px;
+    }
+</style>
+
 <body>
     <div class="row">
         <div class="sidebar col-lg-2 col-md-3">
             <h2>Wiki</h2>
             <form action="{% url 'encyclopedia:search' %}">
-                <input class="search" type="text" name="q" placeholder="Search Encyclopedia">
+                <input class="search" type="text" name="q" placeholder="Search Entries">
             </form>
             <div>
                 <a href="{% url 'encyclopedia:index' %}">Home</a>
@@ -31,6 +38,11 @@
             {% endblock %}
         </div>
         <div class="main col-lg-10 col-md-9">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="error">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
             {% block body %}
             {% endblock %}
         </div>

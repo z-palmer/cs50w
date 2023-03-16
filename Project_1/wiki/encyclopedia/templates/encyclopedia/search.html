@@ -1,9 +1,14 @@
 {% extends 'encyclopedia/layout.html' %}
 
 {% block body %}
-<ul>
-    {% for result in results %}
-    <li><a href="{% url 'encyclopedia:entry' result%}">{{ result }}</a></li>
-    {% endfor %}
-</ul>
+<div>
+    <h3>Possible Matches:</h3>
+</div>
+<div>
+    <ul>
+        {% for result in results %}
+        <li><a href="{% url 'encyclopedia:entry' result%}">{{ result }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}
