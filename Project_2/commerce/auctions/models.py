@@ -17,6 +17,7 @@ class Listing(models.Model):
     time_left = models.DurationField()
     created = models.DateTimeField(default=timezone.now)
     image = models.ImageField()
+    price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
 
 
 class Bid(models.Model):
