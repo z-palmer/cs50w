@@ -2,6 +2,18 @@ from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from django.db import models
 
+LISTING_CATEGORIES = [
+    'Fashion',
+    'Home Goods',
+    'Toys',
+    'Electronics',
+    'Tools',
+    'Car Parts',
+    'Collectibles',
+    'Memorabilia',
+    'Other',
+]
+
 
 class User(AbstractUser):
     id = models.AutoField(primary_key=True)
@@ -18,6 +30,7 @@ class Listing(models.Model):
     created = models.DateTimeField(default=timezone.now)
     image = models.ImageField()
     price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    category = models.TextChoices()
 
 
 class Bid(models.Model):
