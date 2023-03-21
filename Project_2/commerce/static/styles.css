@@ -1,0 +1,15 @@
+body {
+    padding: 10px;
+}
+
+.listing-list {
+    margin: 10px;
+    padding: 40px;
+    border-top-style: solid;
+    border-top-color: rgb(84, 79, 79);
+}
+
+.img-thumbnail {
+    max-inline-size: 33%;
+    padding: 10px;
+}

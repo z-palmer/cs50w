@@ -1,18 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from django.db import models
-
-LISTING_CATEGORIES = [
-    'Fashion',
-    'Home Goods',
-    'Toys',
-    'Electronics',
-    'Tools',
-    'Car Parts',
-    'Collectibles',
-    'Memorabilia',
-    'Other',
-]
+from datetime import timedelta
 
 
 class User(AbstractUser):
@@ -23,14 +12,28 @@ class User(AbstractUser):
 
 
 class Listing(models.Model):
+
+    LISTING_CATEGORIES = [
+        ('LC', 'Listing Category'), ('TY', 'Toys'), ('AN',
+                                                     'Antiques'), ('ME', 'Memorabilia'),
+        ('TO', 'Tools'), ('CA', 'Car Parts'), ('HG',
+                                               'Home Goods'), ('FA', 'Fashion'), ('EL', 'Electronics')
+    ]
+
+    DURATION = timedelta(days=7)
+
     id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='listing')
-    time_left = models.DurationField()
+    time_left = models.DurationField(default=DURATION)
     created = models.DateTimeField(default=timezone.now)
-    image = models.ImageField()
+    image = models.ImageField(upload_to='images')
     price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    category = models.TextChoices()
+    category = models.CharField(
+        choices=LISTING_CATEGORIES, max_length=40, default='Listing Category')
+    title = models.CharField(max_length=64, default='')
+    description = models.TextField(max_length=500, default='')
+    objects = models.Manager()
 
 
 class Bid(models.Model):
