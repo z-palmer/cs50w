@@ -16,6 +16,14 @@ def index(request):
     })
 
 
+@login_required
+def listing(request, title):
+    pull = Listing.objects.filter(title=f'{title}')
+    return render(request, 'auctions/listing.html', {
+        'title': title, 'listing': pull
+    })
+
+
 def login_view(request):
     if request.method == "POST":
 

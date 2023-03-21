@@ -25,7 +25,7 @@ class Listing(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='listing')
-    time_left = models.DurationField(default=DURATION)
+    time_left = models.DurationField(default=DURATION.days)
     created = models.DateTimeField(default=timezone.now)
     image = models.ImageField(upload_to='images')
     price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
