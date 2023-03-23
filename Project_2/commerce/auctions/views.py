@@ -17,11 +17,21 @@ def index(request):
 
 
 @login_required
-def listing(request, title):
-    pull = Listing.objects.filter(title=f'{title}')
+def listing(request, slug):
+    pull = Listing.objects.get(slug=f'{slug}')
     return render(request, 'auctions/listing.html', {
-        'title': title, 'listing': pull
+        'title': pull.title, 'listing': pull
     })
+
+
+@login_required
+def add_to_watchlist(request):
+    return
+
+
+@login_required
+def watchlist(request):
+    return
 
 
 def login_view(request):

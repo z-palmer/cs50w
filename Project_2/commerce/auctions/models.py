@@ -33,7 +33,11 @@ class Listing(models.Model):
         choices=LISTING_CATEGORIES, max_length=40, default='Listing Category')
     title = models.CharField(max_length=64, default='')
     description = models.TextField(max_length=500, default='')
+    slug = models.SlugField(max_length=250, unique_for_date='created')
     objects = models.Manager()
+
+    def __str__(self):
+        return self.title
 
 
 class Bid(models.Model):

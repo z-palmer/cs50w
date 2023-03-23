@@ -1,5 +1,14 @@
 {% extends 'auctions/layout.html' %}
 
 {% block body %}
-<h1>{{ listing }}</h1>
+<h1>{{ listing.title }}</h1>
+<h3>Current bid: ${{ listing.price }}</h3>
+<div>
+    <img class="img-thumbnail" src="{{ listing.image.url }}">
+</div>
+<div>
+    <p>
+        {{ listing.description }}
+    </p>
+</div>
 {% endblock %}

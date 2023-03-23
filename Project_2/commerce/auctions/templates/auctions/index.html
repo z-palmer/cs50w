@@ -5,7 +5,7 @@
 
 {% for listing in listings %}
 <div class="listing-list">
-    <a href="{% url 'listing' listing.title%}">
+    <a href="{% url 'listing' listing.slug %}">
         <h3 class="listing-link">{{ listing.title }}</h3>
     </a>
     <img class="img-thumbnail" src="{{ listing.image.url }}" alt="{{ listing.title }}">
