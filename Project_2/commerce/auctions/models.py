@@ -56,3 +56,11 @@ class Comment(models.Model):
         User, on_delete=models.CASCADE, related_name='comment')
     content = models.TextField(max_length=500)
     posting = models.DateTimeField(default=timezone.now)
+
+
+class Watchlist(models.Model):
+    id = models.AutoField(primary_key=True)
+    listing_id = models.ForeignKey(
+        Listing, on_delete=models.CASCADE, related_name='watchlist')
+    user_id = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='watchlist')
