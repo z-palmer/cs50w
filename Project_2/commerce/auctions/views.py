@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages import get_messages, add_message
 
 from .models import User, Listing
 
@@ -24,14 +25,31 @@ def listing(request, slug):
     })
 
 
-@login_required
-def add_to_watchlist(request):
-    return
+# @login_required
+# def add_to_watchlist(request, title):
+#     item = Listing.objects.get(title=f'{title}')
+#     if User.objects.get(jsonfield__contains={'title': title}):
+#         return render(request, 'auctions/listing.html')
+
+#     return
 
 
 @login_required
 def watchlist(request):
-    return
+    return render(request, 'auctions/watchlist.html')
+
+
+@login_required
+def categories(request):
+    category_list = []
+    for item in Listing.LISTING_CATEGORIES:
+        category_list.append(item[1])
+    return render(request, 'auctions/categories.html', {'categories': category_list})
+
+
+@login_required
+def create_listing(request):
+    return render(request, 'auctions/create_listing.html')
 
 
 def login_view(request):

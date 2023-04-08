@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.utils import timezone
 from django.db import models
 from datetime import timedelta
@@ -6,9 +6,12 @@ from datetime import timedelta
 
 class User(AbstractUser):
     id = models.AutoField(primary_key=True)
-    cash = models.DecimalField(max_digits=8, decimal_places=2)
+    cash = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     account_name = models.CharField(max_length=20, default='N/A')
     account_email = models.EmailField(max_length=64, default='N/A')
+    # watchlist = models.JSONField(null=True)
+
+    objects = UserManager()
 
 
 class Listing(models.Model):
@@ -56,11 +59,3 @@ class Comment(models.Model):
         User, on_delete=models.CASCADE, related_name='comment')
     content = models.TextField(max_length=500)
     posting = models.DateTimeField(default=timezone.now)
-
-
-class Watchlist(models.Model):
-    id = models.AutoField(primary_key=True)
-    listing_id = models.ForeignKey(
-        Listing, on_delete=models.CASCADE, related_name='watchlist')
-    user_id = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='watchlist')
