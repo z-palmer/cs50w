@@ -4,14 +4,14 @@ from django.db import models
 from datetime import timedelta
 
 
-class User(AbstractUser):
+class Bid(models.Model):
+    amount = models.CharField(max_length=64)
     id = models.AutoField(primary_key=True)
-    cash = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    account_name = models.CharField(max_length=20, default='N/A')
-    account_email = models.EmailField(max_length=64, default='N/A')
-    # watchlist = models.JSONField(null=True)
 
-    objects = UserManager()
+
+class Comment(models.Model):
+    id = models.AutoField(primary_key=True)
+    content = models.TextField(max_length=500)
 
 
 class Listing(models.Model):
@@ -23,39 +23,22 @@ class Listing(models.Model):
                                                'Home Goods'), ('FA', 'Fashion'), ('EL', 'Electronics')
     ]
 
-    DURATION = timedelta(days=7)
-
     id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='listing')
-    time_left = models.DurationField(default=DURATION.days)
-    created = models.DateTimeField(default=timezone.now)
-    image = models.ImageField(upload_to='images')
-    price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    category = models.CharField(
-        choices=LISTING_CATEGORIES, max_length=40, default='Listing Category')
-    title = models.CharField(max_length=64, default='')
-    description = models.TextField(max_length=500, default='')
-    slug = models.SlugField(max_length=250, unique_for_date='created')
+    time_left = models.DurationField()
+    posting = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField()
+    current_price = models.ForeignKey(
+        Bid, on_delete=models.CASCADE, related_name='bid')
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+
     objects = models.Manager()
 
-    def __str__(self):
-        return self.title
 
-
-class Bid(models.Model):
-    amount = models.DecimalField(max_digits=8, decimal_places=2)
+class User(AbstractUser):
     id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='bid')
-    listing_id = models.ForeignKey(
-        Listing, on_delete=models.CASCADE, related_name='bid')
-    posted = models.DateTimeField(default=timezone.now)
-
-
-class Comment(models.Model):
-    id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='comment')
-    content = models.TextField(max_length=500)
-    posting = models.DateTimeField(default=timezone.now)
+    cash = models.PositiveIntegerField(default=1000)
+    listings = models.ForeignKey(Listing, on_delete=models.CASCADE, null=True)
+    watchlist = models.ForeignKey(
+        Listing, on_delete=models.CASCADE, related_name='watchlist', null=True)
+    bids = models.ForeignKey(Bid, on_delete=models.CASCADE, null=True)
+    comments = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True)
