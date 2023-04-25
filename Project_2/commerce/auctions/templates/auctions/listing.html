@@ -11,4 +11,12 @@
         {{ listing.description }}
     </p>
 </div>
+<div>
+    <p>
+        Category: {{ listing.category }}
+    </p>
+</div>
+<div>
+    <button action="{% url 'add_to_watchlist' listing.title %}">Add to Watchlist</button>
+</div>
 {% endblock %}

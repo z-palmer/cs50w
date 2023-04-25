@@ -25,26 +25,36 @@ def listing(request, slug):
     })
 
 
-# @login_required
-# def add_to_watchlist(request, title):
-#     item = Listing.objects.get(title=f'{title}')
-#     if User.objects.get(jsonfield__contains={'title': title}):
-#         return render(request, 'auctions/listing.html')
-
-#     return
+@login_required
+def add_to_watchlist(request, title):
+    item = Listing.objects.get(title=title)
+    json = User.objects.get(pk=id).watchlist
+    json[title] = item.current_price
+    return reverse(listing)
 
 
 @login_required
 def watchlist(request):
-    return render(request, 'auctions/watchlist.html')
+    pull = User.objects.get(pk=id).watchlist
+    return render(request, 'auctions/watchlist.html', {
+        'watchlist': pull
+    })
 
 
 @login_required
 def categories(request):
     category_list = []
-    for item in Listing.LISTING_CATEGORIES:
+    for item in Listing.Category.choices:
         category_list.append(item[1])
     return render(request, 'auctions/categories.html', {'categories': category_list})
+
+
+@login_required
+def category_search(request, category):
+    results = Listing.objects.filter(category=category)
+    return render(request, 'auctions/category_search.html', {
+        'results': results
+    })
 
 
 @login_required
