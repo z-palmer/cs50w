@@ -3,7 +3,7 @@
 {% block body %}
 <ul>
     {% for item in watchlist %}
-    <li>{{ item }}</li>
+    <li><a href="{% url 'listing' item.listing.slug %}">{{ item.listing.title }}</a></li>
     {% endfor %}
 </ul>
 {% endblock %}

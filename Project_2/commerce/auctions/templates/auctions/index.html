@@ -1,6 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+{% if user.is_authenticated %}
 <h2>Active Listings</h2>
 
 {% for listing in listings %}
@@ -15,4 +16,5 @@
     </div>
 </div>
 {% endfor %}
+{% endif %}
 {% endblock %}

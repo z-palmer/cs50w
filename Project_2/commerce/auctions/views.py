@@ -6,12 +6,14 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import get_messages, add_message
 
-from .models import User, Listing
+from .models import User, Listing, WatchlistItem
 
 
-@login_required
 def index(request):
-    listings = Listing.objects.all()
+    if request.user.is_authenticated:
+        listings = Listing.objects.all()
+    else:
+        listings = []
     return render(request, "auctions/index.html", {
         'listings': listings
     })
@@ -19,25 +21,40 @@ def index(request):
 
 @login_required
 def listing(request, slug):
+    added = False
     pull = Listing.objects.get(slug=f'{slug}')
+    if WatchlistItem.objects.filter(user=request.user, listing=pull):
+        added = True
+    else:
+        added = False
     return render(request, 'auctions/listing.html', {
-        'title': pull.title, 'listing': pull
+        'title': pull.title, 'listing': pull, 'added': added
     })
 
 
 @login_required
-def add_to_watchlist(request, title):
-    item = Listing.objects.get(title=title)
-    json = User.objects.get(pk=id).watchlist
-    json[title] = item.current_price
-    return reverse(listing)
+def add_to_watchlist(request, listing_id):
+    user = request.user
+    pull = Listing.objects.get(id=listing_id)
+    item = WatchlistItem(user=user, listing=pull)
+    item.save()
+    return HttpResponseRedirect(reverse('listing', args=[pull.slug]))
+
+
+@login_required
+def remove_from_watchlist(request, listing_id):
+    user = request.user
+    pull = Listing.objects.get(id=listing_id)
+    item = WatchlistItem.objects.filter(user=user, listing=pull)
+    item.delete()
+    return HttpResponseRedirect(reverse('listing', args=[pull.slug]))
 
 
 @login_required
 def watchlist(request):
-    pull = User.objects.get(pk=id).watchlist
+    items = WatchlistItem.objects.filter(user=request.user)
     return render(request, 'auctions/watchlist.html', {
-        'watchlist': pull
+        'watchlist': items
     })
 
 

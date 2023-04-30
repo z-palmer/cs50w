@@ -16,7 +16,13 @@
         Category: {{ listing.category }}
     </p>
 </div>
+{% if not added %}
 <div>
-    <button action="{% url 'add_to_watchlist' listing.title %}">Add to Watchlist</button>
+    <a href="{% url 'add_to_watchlist' listing.id %}">Add to Watchlist</a>
 </div>
+{% else %}
+<div>
+    <a href="{% url 'remove_from_watchlist' listing.id %}">Remove from Watchlist</a>
+</div>
+{% endif %}
 {% endblock %}

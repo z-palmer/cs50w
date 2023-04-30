@@ -54,8 +54,17 @@ class User(AbstractUser):
     cash = models.PositiveIntegerField(default=1000)
     listings = models.ForeignKey(
         Listing, on_delete=models.CASCADE, null=True, blank=True)
-    watchlist = models.JSONField(default=dict())
     bids = models.ForeignKey(
         Bid, on_delete=models.CASCADE, null=True, blank=True)
     comments = models.ForeignKey(
         Comment, on_delete=models.CASCADE, null=True, blank=True)
+
+
+class WatchlistItem(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True)
+    listing = models.ForeignKey(
+        Listing, on_delete=models.CASCADE, null=True, blank=True)
+
+    objects = models.Manager()
