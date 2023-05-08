@@ -5,24 +5,24 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import get_messages, add_message
+from django.core.files.base import ContentFile
+import requests
 
 from .models import User, Listing, WatchlistItem
+from .forms import ListingForm
 
 
 def index(request):
-    if request.user.is_authenticated:
-        listings = Listing.objects.all()
-    else:
-        listings = []
+    listings = Listing.objects.all()
     return render(request, "auctions/index.html", {
         'listings': listings
     })
 
 
 @login_required
-def listing(request, slug):
+def listing(request, title):
     added = False
-    pull = Listing.objects.get(slug=f'{slug}')
+    pull = Listing.objects.get(title=f'{title}')
     if WatchlistItem.objects.filter(user=request.user, listing=pull):
         added = True
     else:
@@ -63,7 +63,9 @@ def categories(request):
     category_list = []
     for item in Listing.Category.choices:
         category_list.append(item[1])
-    return render(request, 'auctions/categories.html', {'categories': category_list})
+    return render(request, 'auctions/categories.html', {
+        'categories': category_list
+    })
 
 
 @login_required
@@ -76,7 +78,20 @@ def category_search(request, category):
 
 @login_required
 def create_listing(request):
-    return render(request, 'auctions/create_listing.html')
+    if request.method == 'POST':
+        new_listing_form = ListingForm(request.POST, request.FILES)
+        if new_listing_form.is_valid:
+            new_listing = new_listing_form.save()
+            new_listing.user = request.user
+            new_listing.save()
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            print(new_listing_form.errors)
+    else:
+        new_listing_form = ListingForm()
+        return render(request, 'auctions/create_listing.html', {
+            'new_listing': new_listing_form
+        })
 
 
 def login_view(request):

@@ -6,8 +6,7 @@ from .models import User, Bid, Listing, Comment
 
 class ListingAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'image',
-                    'posting', 'initial_price')
-    prepopulated_fields = {'slug': ('title',)}
+                    'posting', 'price')
 
 
 # Register your models here.

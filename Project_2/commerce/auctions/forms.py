@@ -2,8 +2,9 @@ from django import forms
 from .models import Listing
 
 
-class ImageForm(forms.ModelForm):
-    """Form for the image model"""
+class ListingForm(forms.ModelForm):
     class Meta:
         model = Listing
-        fields = ('title', 'image')
+        fields = ('title', 'price', 'description',
+                  'category', 'image', 'user')
+        widgets = {'user': forms.HiddenInput()}

@@ -3,7 +3,7 @@
 {% block body %}
 <ul>
     {% for result in results %}
-    <li><a href="{% url 'listing' result.slug %}">{{ result }}</a></li>
+    <li><a href="{% url 'listing' result.title %}">{{ result }}</a></li>
     {% endfor %}
 </ul>
 {% endblock %}

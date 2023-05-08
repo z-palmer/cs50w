@@ -6,13 +6,13 @@
 
 {% for listing in listings %}
 <div class="listing-list">
-    <a href="{% url 'listing' listing.slug %}">
+    <a href="{% url 'listing' listing.title %}">
         <h3 class="listing-link">{{ listing.title }}</h3>
     </a>
+    <h6>Listed by {{ listing.user.username }}</h6>
     <img class="img-thumbnail" src="{{ listing.image.url }}" alt="{{ listing.title }}">
     <div class="price-list">
-        <h4>Time left: {{ listing.time_left.days }} days</h4>
-        <h4>${{ listing.initial_price }}</h4>
+        <h4>${{ listing.price }}</h4>
     </div>
 </div>
 {% endfor %}
