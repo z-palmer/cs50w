@@ -8,8 +8,8 @@ from django.contrib.messages import get_messages, add_message
 from django.core.files.base import ContentFile
 import requests
 
-from .models import User, Listing, WatchlistItem
-from .forms import ListingForm
+from .models import User, Listing, WatchlistItem, Comment
+from .forms import ListingForm, CommentForm
 
 
 def index(request):
@@ -27,9 +27,28 @@ def listing(request, title):
         added = True
     else:
         added = False
+    comments = Comment.objects.filter(listing=pull)
     return render(request, 'auctions/listing.html', {
-        'title': pull.title, 'listing': pull, 'added': added
+        'title': pull.title, 'listing': pull, 'added': added, 'comments': comments
     })
+
+
+@login_required
+def add_comment(request, title):
+    pull = Listing.objects.get(title=title)
+    if request.method == 'POST':
+        new_comment_form = CommentForm(request.POST)
+        if new_comment_form.is_valid():
+            new_comment = new_comment_form.save()
+            new_comment.listing = pull
+            new_comment.user = request.user
+            new_comment.save()
+            HttpResponseRedirect(reverse('listing', args=[title]))
+    else:
+        new_comment_form = CommentForm()
+        return render(request, 'auctions/add_comment.html', {
+            'form': new_comment_form
+        })
 
 
 @login_required
@@ -38,7 +57,7 @@ def add_to_watchlist(request, listing_id):
     pull = Listing.objects.get(id=listing_id)
     item = WatchlistItem(user=user, listing=pull)
     item.save()
-    return HttpResponseRedirect(reverse('listing', args=[pull.slug]))
+    return HttpResponseRedirect(reverse('listing', args=[pull.title]))
 
 
 @login_required
@@ -47,7 +66,7 @@ def remove_from_watchlist(request, listing_id):
     pull = Listing.objects.get(id=listing_id)
     item = WatchlistItem.objects.filter(user=user, listing=pull)
     item.delete()
-    return HttpResponseRedirect(reverse('listing', args=[pull.slug]))
+    return HttpResponseRedirect(reverse('listing', args=[pull.title]))
 
 
 @login_required

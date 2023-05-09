@@ -2,22 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class Bid(models.Model):
-    id = models.AutoField(primary_key=True)
-    amount = models.DecimalField(decimal_places=2, max_digits=5)
-
-
-class Comment(models.Model):
-    id = models.AutoField(primary_key=True)
-    content = models.TextField(max_length=500)
-
-
 class User(AbstractUser):
     id = models.AutoField(primary_key=True)
-    bids = models.ForeignKey(
-        Bid, on_delete=models.CASCADE, null=True, blank=True)
-    comments = models.ForeignKey(
-        Comment, on_delete=models.CASCADE, null=True, blank=True)
 
 
 class Listing(models.Model):
@@ -38,8 +24,6 @@ class Listing(models.Model):
     posting = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='images')
     price = models.DecimalField(decimal_places=2, max_digits=7)
-    comments = models.ForeignKey(
-        Comment, on_delete=models.CASCADE, null=True, blank=True)
     description = models.TextField(max_length=300)
     category = models.CharField(max_length=100,
                                 choices=Category.choices,
@@ -51,6 +35,26 @@ class Listing(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Bid(models.Model):
+    id = models.AutoField(primary_key=True)
+    amount = models.DecimalField(decimal_places=2, max_digits=5)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True)
+    listing = models.ForeignKey(
+        Listing, on_delete=models.CASCADE, null=True, blank=True)
+
+
+class Comment(models.Model):
+    id = models.AutoField(primary_key=True)
+    content = models.TextField(max_length=500)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True)
+    listing = models.ForeignKey(
+        Listing, on_delete=models.CASCADE, null=True, blank=True)
+
+    objects = models.Manager()
 
 
 class WatchlistItem(models.Model):

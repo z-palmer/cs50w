@@ -12,7 +12,7 @@
     <h6>Listed by {{ listing.user.username }}</h6>
     <img class="img-thumbnail" src="{{ listing.image.url }}" alt="{{ listing.title }}">
     <div class="price-list">
-        <h4>${{ listing.price }}</h4>
+        <h4>Current price: ${{ listing.price }}</h4>
     </div>
 </div>
 {% endfor %}

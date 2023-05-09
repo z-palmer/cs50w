@@ -27,5 +27,11 @@
 {% endif %}
 {% if user == listing.user %}
 <button>Delete Listing</button>
+{% else %}
+<button>Place Bid</button>
+<a href="{% url 'add_comment' listing.title %}">Add Comment</a>
 {% endif %}
+{% for comment in comments %}
+{{ comment.content }}
+{% endfor %}
 {% endblock %}
