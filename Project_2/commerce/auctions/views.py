@@ -9,7 +9,7 @@ from django.core.files.base import ContentFile
 import requests
 
 from .models import User, Listing, WatchlistItem, Comment
-from .forms import ListingForm, CommentForm
+from .forms import ListingForm, CommentForm, BidForm
 
 
 def index(request):
@@ -43,12 +43,47 @@ def add_comment(request, title):
             new_comment.listing = pull
             new_comment.user = request.user
             new_comment.save()
-            HttpResponseRedirect(reverse('listing', args=[title]))
+            return HttpResponseRedirect(reverse('listing', args=[title]))
     else:
         new_comment_form = CommentForm()
         return render(request, 'auctions/add_comment.html', {
             'form': new_comment_form
         })
+
+
+@login_required
+def add_bid(request, title):
+    pull = Listing.objects.get(title=title)
+    if request.method == 'POST':
+        new_bid_form = BidForm(request.POST)
+        if float(request.POST['amount']) > float(pull.price):
+            if new_bid_form.is_valid():
+                new_bid = new_bid_form.save()
+                pull.price = new_bid.amount
+                pull.highest_bidder = request.user
+                pull.save()
+                new_bid.listing = pull
+                new_bid.user = request.user
+                new_bid.save()
+                return HttpResponseRedirect(reverse('listing', args=[title]))
+            breakpoint()
+        else:
+            # error message
+            breakpoint()
+            pass
+    else:
+        new_bid_form = BidForm()
+        return render(request, 'auctions/add_bid.html', {
+            'form': new_bid_form
+        })
+
+
+@login_required
+def close_listing(request, title):
+    pull = Listing.objects.get(title=title)
+    pull.closed = True
+    pull.save()
+    return HttpResponseRedirect(reverse('listing', args=[title]))
 
 
 @login_required

@@ -29,7 +29,12 @@ class Listing(models.Model):
                                 choices=Category.choices,
                                 default=Category.LISTING_CATEGORY)
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=True, blank=True)
+        User, on_delete=models.CASCADE, null=True, blank=True, related_name='creator')
+
+    highest_bidder = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True, related_name='bidder')
+
+    closed = models.BooleanField(default=False)
 
     objects = models.Manager()
 
@@ -39,7 +44,7 @@ class Listing(models.Model):
 
 class Bid(models.Model):
     id = models.AutoField(primary_key=True)
-    amount = models.DecimalField(decimal_places=2, max_digits=5)
+    amount = models.DecimalField(decimal_places=2, max_digits=7)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, blank=True)
     listing = models.ForeignKey(

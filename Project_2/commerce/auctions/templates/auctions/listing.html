@@ -1,8 +1,14 @@
 {% extends 'auctions/layout.html' %}
 
 {% block body %}
+{% if request.user == listing.highest_bidder %}
+{% if listing.closed == True %}
+<h1><em>You Have Won!</em></h1>
+{% endif %}
+{% endif %}
 <h1>{{ listing.title }}</h1>
 <h3>Current bid: ${{ listing.price }}</h3>
+<h6>{{ listing.highest_bidder }} is the highest bidder</h6>
 <div>
     <img class="img-thumbnail" src="{{ listing.image.url }}">
 </div>
@@ -26,12 +32,22 @@
 </div>
 {% endif %}
 {% if user == listing.user %}
-<button>Delete Listing</button>
+{% if listing.closed == False %}
+<a href="{% url 'close_listing' listing.title %}">Close Listing</a>
 {% else %}
-<button>Place Bid</button>
+<h3>Listing Closed</h3>
+{% endif %}
+{% else %}
+{% if listing.closed == True %}
+<h3>Listing Closed</h3>
+{% else %}
+<a href="{% url 'add_bid' listing.title %}">Place Bid</a>
 <a href="{% url 'add_comment' listing.title %}">Add Comment</a>
 {% endif %}
+{% endif %}
 {% for comment in comments %}
-{{ comment.content }}
+<div>
+    {{ comment.content }}
+</div>
 {% endfor %}
 {% endblock %}
