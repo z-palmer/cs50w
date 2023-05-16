@@ -8,46 +8,65 @@
 {% endif %}
 <h1>{{ listing.title }}</h1>
 <h3>Current bid: ${{ listing.price }}</h3>
+{% if listing.highest_bidder %}
 <h6>{{ listing.highest_bidder }} is the highest bidder</h6>
-<div>
-    <img class="img-thumbnail" src="{{ listing.image.url }}">
-</div>
-<div>
-    <p>
-        {{ listing.description }}
-    </p>
-</div>
-<div>
-    <p>
-        Category: {{ listing.category }}
-    </p>
-</div>
-{% if not added %}
-<div>
-    <a href="{% url 'add_to_watchlist' listing.id %}">Add to Watchlist</a>
-</div>
 {% else %}
-<div>
-    <a href="{% url 'remove_from_watchlist' listing.id %}">Remove from Watchlist</a>
+<h6>No one has bid on this listing yet!</h6>
+{% endif %}
+<div class="listing-info">
+    <div>
+        <img class="img-thumbnail" src="{{ listing.image.url }}">
+    </div>
+    <div>
+        <p>
+            {{ listing.description }}
+        </p>
+    </div>
+    <div>
+        <p>
+            Category: {{ listing.category }}
+        </p>
+    </div>
 </div>
-{% endif %}
-{% if user == listing.user %}
-{% if listing.closed == False %}
-<a href="{% url 'close_listing' listing.title %}">Close Listing</a>
-{% else %}
-<h3>Listing Closed</h3>
-{% endif %}
-{% else %}
-{% if listing.closed == True %}
-<h3>Listing Closed</h3>
-{% else %}
-<a href="{% url 'add_bid' listing.title %}">Place Bid</a>
-<a href="{% url 'add_comment' listing.title %}">Add Comment</a>
-{% endif %}
-{% endif %}
+<ul class="nav">
+    {% if not added %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'add_to_watchlist' listing.id %}">Add to Watchlist</a>
+    </li>
+    {% else %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'remove_from_watchlist' listing.id %}">Remove from Watchlist</a>
+    </li>
+    {% endif %}
+    {% if user == listing.user %}
+    {% if listing.closed == False %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'close_listing' listing.title %}">Close Listing</a>
+    </li>
+    {% else %}
+    <li>
+        <h3>Listing Closed</h3>
+    </li>
+    {% endif %}
+    {% else %}
+    {% if listing.closed == True %}
+    <li>
+        <h3>Listing Closed</h3>
+    </li>
+    {% else %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'add_bid' listing.title %}">Place Bid</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'add_comment' listing.title %}">Add Comment</a>
+    </li>
+    {% endif %}
+    {% endif %}
+</ul>
 {% for comment in comments %}
-<div>
-    {{ comment.content }}
+<div class="listing-comment">
+    <p>{{ comment.content }}</p>
+    <h6 class="comment-user">Commented by {{ comment.user }}</h6>
 </div>
 {% endfor %}
 {% endblock %}
