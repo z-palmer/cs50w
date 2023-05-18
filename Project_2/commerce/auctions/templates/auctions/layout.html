@@ -10,6 +10,13 @@
     <link href="{% static 'auctions/styles.css' %}" rel="stylesheet" type="text/css" media="screen">
 </head>
 
+<!-- <style>
+    .error {
+        background-color: rgb(218, 110, 110);
+        padding: 10px;
+    }
+</style> -->
+
 <body>
     <h1>Auctions</h1>
     <div>
@@ -46,6 +53,11 @@
         {% endif %}
     </ul>
     <hr>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="error">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
     {% block body %}
     {% endblock %}
 </body>

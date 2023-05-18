@@ -1,12 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from django.contrib.messages import get_messages, add_message
-from django.core.files.base import ContentFile
-import requests
+from django.contrib import messages
 
 from .models import User, Listing, WatchlistItem, Comment
 from .forms import ListingForm, CommentForm, BidForm
@@ -66,11 +64,10 @@ def add_bid(request, title):
                 new_bid.user = request.user
                 new_bid.save()
                 return HttpResponseRedirect(reverse('listing', args=[title]))
-            breakpoint()
         else:
-            # error message
-            breakpoint()
-            pass
+            messages.error(
+                request, 'Bid must be higher than the original amount of the listing.')
+            return HttpResponseRedirect(reverse('listing', args=[title]))
     else:
         new_bid_form = BidForm()
         return render(request, 'auctions/add_bid.html', {

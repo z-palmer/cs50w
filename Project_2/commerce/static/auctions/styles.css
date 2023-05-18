@@ -17,7 +17,7 @@ body {
 
 .price-list {
     display: inline-block;
-    align-self: right;
+    text-align: right;
     padding: 100px;
 }
 
@@ -41,4 +41,15 @@ body {
 
 .comment-user {
     text-align: right;
+}
+
+.listing-description {
+    padding: 10px;
+    border: 2px solid black;
+    width: 50%;
+}
+
+.error {
+    background-color: rgb(218, 110, 110);
+    padding: 10px;
 }
