@@ -18,7 +18,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 class WatchlistItemAdmin(admin.ModelAdmin):
-    list_dsplay = ('user', 'listing')
+    list_display = ('user', 'listing')
 
 
 # Register your models here.
