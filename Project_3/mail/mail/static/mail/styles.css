@@ -4,4 +4,7 @@ textarea {
 
 .email-preview {
     border: solid 2px black;
+    padding: 4px;
+    margin: 2px;
+    width: 80%;
 }

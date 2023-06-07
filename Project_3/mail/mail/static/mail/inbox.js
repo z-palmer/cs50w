@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
 function compose_email() {
 
   // Show compose view and hide other views
-  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#mailbox-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
 
   document.querySelector('#compose-form').onsubmit = function () {
@@ -47,11 +48,12 @@ function compose_email() {
 function load_mailbox(mailbox) {
 
   // Show the mailbox and hide other views
-  document.querySelector('#emails-view').style.display = 'block';
+  document.querySelector('#mailbox-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'none';
 
   // Show the mailbox name
-  document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+  document.querySelector('#mailbox-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
 
   if (mailbox === 'inbox') {
 
@@ -61,12 +63,18 @@ function load_mailbox(mailbox) {
       .then(emails => {
         console.log(emails);
         emails.forEach(element => {
+          // create previews for each email in response
           const email = document.createElement('div');
           email.className = 'email-preview';
-          email.innerHTML = `<h5><strong>From:</strong> ${element.sender} 
-          <strong>Subject:</strong> ${element.subject} 
-          <strong>Time:</strong> ${element.timestamp}<h5>`;
-          document.querySelector('#emails-view').append(email);
+          email.id = element.id;
+          email.innerHTML = `<h6><strong>From:</strong>  ${element.sender} 
+          <strong>Subject:</strong>  ${element.subject} 
+          <strong>Time:</strong>  ${element.timestamp}<h6>`;
+          email.addEventListener('click', () => {
+            email.style.backgroundColor = 'grey';
+            load_email(email.id);
+          });
+          document.querySelector('#mailbox-view').append(email);
         });
       });
   }
@@ -90,4 +98,28 @@ function load_mailbox(mailbox) {
         console.log(emails);
       });
   }
+}
+
+function load_email(id) {
+
+  document.querySelector('#mailbox-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'block';
+  document.querySelector('#compose-view').style.display = 'none';
+
+  fetch(`/emails/${id}`)
+    .then(response => response.json())
+    .then(email => {
+      console.log(email);
+      const header = document.createElement('div');
+      header.className = 'email-header';
+      header.innerHTML = `<h5>From:</h5> ${email.sender}
+      <h5>To:</h5> ${email.recipients}
+      <h5>Subject:</h5> ${email.subject}
+      <h5>Time:</h5> ${email.timestamp}`;
+      const body = document.createElement('div');
+      body.className = 'email-body';
+      body.innerHTML = `<p>${email.body}</p>`
+
+      document.querySelector('#email-view').append(header, body);
+    });
 }
